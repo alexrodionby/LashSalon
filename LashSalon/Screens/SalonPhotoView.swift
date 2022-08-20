@@ -22,7 +22,7 @@ struct SalonPhotoView: View {
     @State var gridLayout: [GridItem] = [GridItem(.flexible())]
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             LazyVGrid(columns: gridLayout, alignment: .center, spacing: 0) {
                 ForEach(allPhotosURL, id: \.self) { fotoURL in
                     ZStack {

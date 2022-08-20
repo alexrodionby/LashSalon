@@ -24,7 +24,7 @@ final class Session {
     
     var userName: String {
         get {
-            return KeychainWrapper.standard.string(forKey: "userName") ?? "Пока нет Имени"
+            return KeychainWrapper.standard.string(forKey: "userName") ?? ""
         }
         set {
             KeychainWrapper.standard.set(newValue, forKey: "userName")
@@ -33,7 +33,7 @@ final class Session {
     
     var userPhone: String {
         get {
-            return KeychainWrapper.standard.string(forKey: "userPhone") ?? "Пока нет номера"
+            return KeychainWrapper.standard.string(forKey: "userPhone") ?? ""
         }
         set {
             KeychainWrapper.standard.set(newValue, forKey: "userPhone")

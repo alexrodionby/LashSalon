@@ -16,47 +16,47 @@ struct ServiceDetailView: View {
     @State var gridLayout: [GridItem] = [GridItem(.flexible())]
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             LazyVGrid(columns: gridLayout, alignment: .center) {
                 ForEach(serviceCategoryModel.serviceData) { index in
                     
-                    ZStack{
+                    ZStack {
                         RoundedRectangle(cornerRadius: 25)
                             .fill(Color("brown4"))
                             .shadow(color: .gray, radius: 10, x: 5, y: 5)
                             .padding()
                         
-                        HStack {
-                            VStack {
-                                Text("\(index.serviceName)")
-                                    .font(.body)
+                        VStack {
+                            
+                            Text("\(index.serviceName)")
+                                .font(.body)
+                                .foregroundColor(Color.white)
+                                .padding()
+                            
+                            HStack {
+                                Text("Время: \(index.serviceTime) мин")
                                     .foregroundColor(Color.white)
-                                    .padding()
+                                    .padding(.horizontal)
+                 
+                                Text("Стоимость: \(index.servicePrice) руб")
+                                    .foregroundColor(Color.white)
+                                    .padding(.horizontal)
                             }
                             
-                            VStack {
-                                Text("\(index.serviceTime) мин")
-                                    .foregroundColor(Color.white)
-                                    .padding()
-                                Text("\(index.servicePrice) руб")
-                                    .foregroundColor(Color.white)
-                                    .padding()
-                            }
-                            
-                            VStack {
-                                Link("Заказать на сайте", destination: URL(string: "https://dikidi.net/684321")!)
+                            HStack {
+                                Link("Заказ на сайте", destination: URL(string: "https://dikidi.net/684321")!)
                                     .foregroundColor(Color("gold"))
                                     .font(.title2)
                                     .padding()
                                 
                                 NavigationLink(destination: OrderView(orderCategory: index)) {
                                     Text("Перейти к заказу")
-                                        .padding()
                                         .foregroundColor(Color("gold"))
                                         .font(.title2)
-                                        .lineLimit(3)
+                                        .padding()
                                 }
                             }
+                            
                         }
                         .padding()
                         .navigationTitle(categorey?.serviceCategoryName ?? "")

@@ -18,110 +18,118 @@ struct SettingsView: View {
     @StateObject private var viewModel = ViewModel()
     @StateObject private var authState = AuthState()
     
+    init() {
+        UINavigationBar.appearance().barTintColor = UIColor(named: "brown1")
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor : UIColor(named: "brown6")!]
+    }
+    
     var body: some View {
-        ZStack {
-            Color("brown1").ignoresSafeArea()
-            
-            VStack {
-                Image("logoblack")
-                    .resizable()
-                    .scaledToFit()
-                    .padding(.horizontal)
+        NavigationView {
+            ZStack {
+                Color("brown1").ignoresSafeArea()
                 
-                switch authState.value {
-                case .undefined:
-                    ProgressView()
-                case .authenticated:
-                    HStack {
-                        VStack {
+                VStack {
+                    
+                    Image("logoblack")
+                        .resizable()
+                        .scaledToFit()
+                        .padding(.horizontal)
+                    
+                    switch authState.value {
+                    case .undefined:
+                        ProgressView()
+                    case .authenticated:
+                        HStack {
+                            VStack {
+                                Image("girl")
+                                    .resizable()
+                                    .frame(width: 100, height: 100)
+                                Text(Session.shared.userName)
+                            }
+                            
+                            Button {
+                                Task {
+                                    do {
+                                        try await viewModel.logout()
+                                    } catch {
+                                        print("Ошибка выхода", error.localizedDescription)
+                                    }
+                                }
+                            } label: {
+                                Label {
+                                    Text("Выход из учетной записи")
+                                } icon: {
+                                    Image(systemName: "person.fill.badge.minus")
+                                }
+                            }
+                            .buttonStyle(.borderedProminent)
+                            
+                        }
+                        Spacer()
+                    case .notAuthenticated:
+                        HStack {
                             Image("girl")
                                 .resizable()
                                 .frame(width: 100, height: 100)
-                            Text(Session.shared.userName)
-                        }
-                        
-                        Button {
-                            Task {
-                                do {
-                                    try await viewModel.logout()
-                                } catch {
-                                    print("Ошибка выхода", error.localizedDescription)
+                            Button {
+                                showLoginView = true
+                            } label: {
+                                Label {
+                                    Text("Войти через Apple")
+                                } icon: {
+                                    Image(systemName: "applelogo")
                                 }
                             }
-                        } label: {
-                            Label {
-                                Text("Выход из учетной записи")
-                            } icon: {
-                                Image(systemName: "person.fill.badge.minus")
-                            }
-                        }
-                        .buttonStyle(.borderedProminent)
-                        
-                    }
-                    Spacer()
-                case .notAuthenticated:
-                    HStack {
-                        Image("girl")
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                        Button {
-                            showLoginView = true
-                        } label: {
-                            Label {
-                                Text("Войти через Apple")
-                            } icon: {
-                                Image(systemName: "applelogo")
-                            }
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .sheet(isPresented: $showLoginView) {
-                            VStack {
-                                Image("logoblack")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .padding()
-                                HStack {
-                                    Text("Ваше имя:")
+                            .buttonStyle(.borderedProminent)
+                            .sheet(isPresented: $showLoginView) {
+                                VStack {
+                                    Image("logoblack")
+                                        .resizable()
+                                        .scaledToFit()
                                         .padding()
-                                    TextField(text: $userName) {
-                                        Text("Имя")
-                                    }
-                                    .border(.black, width: 1)
-                                    .padding()
-                                }
-                                HStack {
-                                    Text("Ваш номер телефона:")
+                                    HStack {
+                                        Text("Ваше имя:")
+                                            .padding()
+                                        TextField(text: $userName) {
+                                            Text("Имя")
+                                        }
+                                        .border(.black, width: 1)
                                         .padding()
-                                    TextField(text: $userPhone) {
-                                        Text("+375291234567")
                                     }
-                                    .border(.black, width: 1)
+                                    HStack {
+                                        Text("Ваш номер телефона:")
+                                            .padding()
+                                        TextField(text: $userPhone) {
+                                            Text("+375291234567")
+                                        }
+                                        .border(.black, width: 1)
+                                        .padding()
+                                    }
+                                    
+                                    Button {
+                                        authenticate()
+                                        showLoginView = false
+                                    } label: {
+                                        Label {
+                                            Text("Войти через Apple")
+                                        } icon: {
+                                            Image(systemName: "applelogo")
+                                        }
+                                    }
+                                    .buttonStyle(.borderedProminent)
                                     .padding()
+                                    
+                                    Spacer()
                                 }
-                                
-                                Button {
-                                    authenticate()
-                                    showLoginView = false
-                                } label: {
-                                    Label {
-                                        Text("Войти через Apple")
-                                    } icon: {
-                                        Image(systemName: "applelogo")
-                                    }
-                                }
-                                .buttonStyle(.borderedProminent)
-                                .padding()
-                                
-                                Spacer()
                             }
-                            .background(Color("brown1"))
-                            .accentColor(Color("brown6"))
                         }
-                        
+                        Spacer()
                     }
-                    Spacer()
                 }
             }
+            .navigationTitle("Настройки")
+            .navigationBarTitleDisplayMode(.inline)
+            .background(Color("brown1"))
         }
     }
     
@@ -140,9 +148,9 @@ struct SettingsView: View {
         Session.shared.token = result.uid
         Session.shared.userName = userName
         Session.shared.userPhone = userPhone
-         print("Наш токен =", Session.shared.token)
-          print("Наше имя =", Session.shared.userName)
-         print("Наш телефон =", Session.shared.userPhone)
+        print("Наш токен =", Session.shared.token)
+        print("Наше имя =", Session.shared.userName)
+        print("Наш телефон =", Session.shared.userPhone)
     }
     
     func handleAppleServiceError(_ error: Error) {

@@ -40,9 +40,9 @@ class OrderViewModel: ObservableObject {
     }
     
     // Создаем документ в БД с заказом услуги
-    func createDayOfSeviceOrder(month: String, day: String, serviceName: String, time: String) {
+    func createDayOfSeviceOrder(month: String, day: String, serviceName: String, time: String, userName: String, userPhone: String, token: String) {
         let db = Firestore.firestore()
-        db.collection("Orders").addDocument(data: ["day": day, "month": month, "serviceName": serviceName, "time": time]) { error in
+        db.collection("Orders").addDocument(data: ["day": day, "month": month, "serviceName": serviceName, "time": time, "userName": userName, "userPhone": userPhone, "token": token]) { error in
             if error == nil {
                 print("Удалось создать запись в БД")
             } else {
@@ -63,7 +63,33 @@ class OrderViewModel: ObservableObject {
         }
     }
     
-    
+    // Берем все заказы, выбираем заданные по токену, и возвращаем их
+    func getAllOrdersByToken(token: String) async throws -> [OrderModel] {
+        let db = Firestore.firestore()
+        var newAllOrders: [OrderModel] = []
+        do {
+            let result = try await db.collection("Orders").getDocuments()
+                let allOrders = result.documents.map { doc in
+                    OrderModel(id: doc.documentID,
+                               day: doc["day"] as? String ?? "",
+                               month: doc["month"] as? String ?? "",
+                               serviceName: doc["serviceName"] as? String ?? "",
+                               time: doc["time"] as? String ?? "",
+                               token: doc["token"] as? String ?? "",
+                               userName: doc["userName"] as? String ?? "",
+                               userPhone: doc["userPhone"] as? String ?? "")
+                }
+            allOrders.map { order in
+                if order.token == token {
+                    newAllOrders.append(order)
+                }
+            }
+            return newAllOrders
+        } catch {
+            print(error.localizedDescription)
+            throw error
+        }
+    }
     
 }
 
