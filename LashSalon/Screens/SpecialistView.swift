@@ -20,7 +20,7 @@ struct SpecialistView: View {
     @State var gridLayout: [GridItem] = [GridItem(.flexible()), GridItem(.flexible())]
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             LazyVGrid(columns: gridLayout, alignment: .center, spacing: 0) {
                 ForEach(serviceCategoryModel.specialistData) { spec in
                     ZStack {

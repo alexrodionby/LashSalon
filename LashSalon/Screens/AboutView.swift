@@ -21,7 +21,7 @@ struct AboutView: View {
             ZStack {
                 Color("brown1")
                     .ignoresSafeArea()
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     VStack {
                         Image("logoblack")
                             .resizable()

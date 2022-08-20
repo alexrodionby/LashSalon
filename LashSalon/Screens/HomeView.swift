@@ -27,7 +27,7 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 
                 Image("logoblack")
                     .resizable()

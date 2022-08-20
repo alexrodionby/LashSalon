@@ -9,6 +9,8 @@ import SwiftUI
 
 struct OrderView: View {
     
+
+    
     @ObservedObject var orderViewModel = OrderViewModel()
     
     var orderCategory: ServiceModel?
@@ -43,33 +45,17 @@ struct OrderView: View {
     }
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             
-            HStack {
-                Text("Услуга:")
-                Text(orderCategory?.serviceName ?? "")
-                Spacer()
-            }
-            .padding(.horizontal)
-            
-            HStack {
-                Text("Время:")
-                Text("\(orderCategory?.serviceTime ?? 0) минут")
-                Spacer()
-            }
-            .padding(.horizontal)
-            
-            HStack {
-                Text("Стоимость:")
-                Text("\(orderCategory?.servicePrice ?? 0) рублей")
-                Spacer()
-            }
-            .padding(.horizontal)
-            
+            Text("Выберите дату")
+                .font(.title2)
+                .fontWeight(.bold)
+
             DatePicker("Выберите день", selection: $selectDate, displayedComponents: [.date])
-                .accentColor(Color("brown6"))
+                .labelsHidden()
+                .preferredColorScheme(.light)
                 .datePickerStyle(.graphical)
-                .padding()
+                .padding(.horizontal)
                 .onChange(of: selectDate) { newValue in
                     print("newValue =", newValue)
                     print(dateFormatterMonth.string(from: newValue))
@@ -79,10 +65,16 @@ struct OrderView: View {
                     }
                 }
             
-            Text("Выбранная дата")
-            Text(dateFormatter.string(from: selectDate))
-            Text(dateFormatterMonth.string(from: selectDate))
-            Text(dateFormatterDay.string(from: selectDate))
+
+
+            VStack {
+                
+                Text("Выберите доступное время")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding(.bottom)
+            }
+            
             HStack {
                 VStack {
                     Text("10:00")
@@ -96,7 +88,6 @@ struct OrderView: View {
                         showAlert = true
                         timeOrder = "10:00"
                         timeId = "time1"
-         //               orderViewModel.updateDayOfSeviceOrder(month: dateFormatterMonth.string(from: selectDate), day: dateFormatterDay.string(from: selectDate), serviceName: orderCategory?.serviceName ?? "Ошибка по nil", time: "10")
                     } label: {
                         Text("Заказать")
                             .foregroundColor(Color("brown6"))
@@ -113,13 +104,14 @@ struct OrderView: View {
                     }
                     
                     Button {
-                        orderViewModel.createDayOfSeviceOrder(month: dateFormatterMonth.string(from: selectDate), day: dateFormatterDay.string(from: selectDate), serviceName: orderCategory?.serviceName ?? "Ошибка по nil", time: "12")
+                        showAlert = true
+                        timeOrder = "12:00"
+                        timeId = "time2"
                     } label: {
                         Text("Заказать")
                             .foregroundColor(Color("brown6"))
                             .padding(5)
                     }
-
                 }
                 
                 VStack {
@@ -131,7 +123,9 @@ struct OrderView: View {
                     }
                     
                     Button {
-                        orderViewModel.createDayOfSeviceOrder(month: dateFormatterMonth.string(from: selectDate), day: dateFormatterDay.string(from: selectDate), serviceName: orderCategory?.serviceName ?? "Ошибка по nil", time: "14")
+                        showAlert = true
+                        timeOrder = "14:00"
+                        timeId = "time3"
                     } label: {
                         Text("Заказать")
                             .foregroundColor(Color("brown6"))
@@ -148,7 +142,9 @@ struct OrderView: View {
                     }
                     
                     Button {
-                        orderViewModel.createDayOfSeviceOrder(month: dateFormatterMonth.string(from: selectDate), day: dateFormatterDay.string(from: selectDate), serviceName: orderCategory?.serviceName ?? "Ошибка по nil", time: "16")
+                        showAlert = true
+                        timeOrder = "16:00"
+                        timeId = "time4"
                     } label: {
                         Text("Заказать")
                             .foregroundColor(Color("brown6"))
@@ -157,6 +153,7 @@ struct OrderView: View {
                 }
                 
             }
+            .padding(.bottom)
             .alert("Подтвердите заказ", isPresented: $showAlert) {
                 
                 Button(role: .cancel) {
@@ -167,7 +164,7 @@ struct OrderView: View {
                 
                 Button {
                     // запросы тут ставим
-                    orderViewModel.createDayOfSeviceOrder(month: dateFormatterMonth.string(from: selectDate), day: dateFormatterDay.string(from: selectDate), serviceName: orderCategory?.serviceName ?? "Ошибка по nil", time: timeOrder)
+                    orderViewModel.createDayOfSeviceOrder(month: dateFormatterMonth.string(from: selectDate), day: dateFormatterDay.string(from: selectDate), serviceName: orderCategory?.serviceName ?? "Ошибка по nil", time: timeOrder, userName: Session.shared.userName, userPhone: Session.shared.userPhone, token: Session.shared.token)
                     
                     orderViewModel.modifyDayOfSeviceOrder(id: orderDayToShow?.id ?? "", month: dateFormatterMonth.string(from: selectDate), time: timeId)
                     
@@ -185,11 +182,45 @@ struct OrderView: View {
                          "\nВремя: \(timeOrder)")
                 }
             }
-
             
+            VStack {
+                
+                HStack {
+                    Text("Услуга:")
+                        .fontWeight(.bold)
+                    Text(orderCategory?.serviceName ?? "")
+                    Spacer()
+                }
+                .padding(.horizontal)
+                
+                HStack {
+                    Text("Время:")
+                        .fontWeight(.bold)
+                    Text("\(orderCategory?.serviceTime ?? 0) минут")
+                    Spacer()
+                }
+                .padding(.horizontal)
+                
+                HStack {
+                    Text("Стоимость:")
+                        .fontWeight(.bold)
+                    Text("\(orderCategory?.servicePrice ?? 0) рублей")
+                    Spacer()
+                }
+                .padding(.horizontal)
+                
+                HStack {
+                    Text("Дата:")
+                        .fontWeight(.bold)
+                    Text(dateFormatter.string(from: selectDate))
+                    Spacer()
+                }
+                .padding(.horizontal)
+            }
             
         }
         .background(Color("brown1"))
+        .foregroundColor(Color("brown6"))
     }
 }
 
