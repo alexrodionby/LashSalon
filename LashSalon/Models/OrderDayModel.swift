@@ -5,6 +5,7 @@
 //  Created by Alexandr Rodionov on 16.08.22.
 //
 
+// Модель дня для бронирования услуги
 import Foundation
 
 struct OrderDayModel: Identifiable {

@@ -5,6 +5,7 @@
 //  Created by Alexandr Rodionov on 15.08.22.
 //
 
+// Экран чата с администратором (находится в стадии разработки)
 import SwiftUI
 
 struct ChatView: View {

@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseCore
 // from https://github.com/rebeloper/FirebaseService.git
+// Это кастомная библиотека для авторизации, с упрощенными методами
 import FirebaseService
 
 // Добавляем AppDelegate как было в uikit
@@ -17,7 +18,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         // Инициализируем базу данных
         FirebaseApp.configure()
-        
         return true
     }
 }

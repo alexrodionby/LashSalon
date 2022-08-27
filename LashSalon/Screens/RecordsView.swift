@@ -5,6 +5,7 @@
 //  Created by Alexandr Rodionov on 15.08.22.
 //
 
+// Экран со списком заказанных услуг имменного этого пользователя
 import SwiftUI
 
 struct RecordsView: View {
@@ -18,13 +19,14 @@ struct RecordsView: View {
     // Настраиваем внешний вид LazyVGrid
     @State var gridLayout: [GridItem] = [GridItem(.flexible())]
     
+    // Массив из услуг, который мы получим после запроса
     @State var allUserRecords: [OrderModel] = []
     
     // Делаем сетевой запрос на инициализации экрана + внешний вид навбара
     init() {
         UINavigationBar.appearance().barTintColor = UIColor(named: "brown1")
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor : UIColor(named: "brown6")!]
-        // запрос
+        // запрос по необходимости может быть тут
     }
     
     var body: some View {
@@ -62,6 +64,22 @@ struct RecordsView: View {
                                     Text("\(index.day)")
                                     Text("\(index.month)")
                                     Text("\(index.time)")
+                                }
+                                HStack {
+                                    Button {
+                                        // удаляем документ с заказом
+                                        orderViewModel.deleteOrder(id: index.id)
+                                        // обновляем ui с временным токеном
+                                        Task {
+                                            allUserRecords = try await orderViewModel.getAllOrdersByToken(token: "")
+                                        }
+                                        // Делаем доступный тот день, который отменили заказ
+                                        orderViewModel.modifyDayOfSeviceOrderToTrue(id: index.homeDayId, month: index.month, time: index.homeTimeId)
+                                    } label: {
+                                        Text("Отменить заказ")
+                                            .font(.title2)
+                                            .foregroundColor(Color("gold"))
+                                    }
                                 }
                             }
                             .font(.body)

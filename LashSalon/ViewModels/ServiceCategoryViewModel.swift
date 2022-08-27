@@ -5,6 +5,8 @@
 //  Created by Alexandr Rodionov on 15.08.22.
 //
 
+
+// Вьюмодель для работы с услугами через firebase
 import Foundation
 import Firebase
 

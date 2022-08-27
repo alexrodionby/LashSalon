@@ -22,9 +22,9 @@ extension SettingsView {
             Session.shared.token = ""
             Session.shared.userName = ""
             Session.shared.userPhone = ""
-            print("Наш токен =", Session.shared.token)
-            print("Наше имя =", Session.shared.userName)
-            print("Наш телефон =", Session.shared.userPhone)
+            // print("Наш токен =", Session.shared.token)
+            // print("Наше имя =", Session.shared.userName)
+            // print("Наш телефон =", Session.shared.userPhone)
         }
     }
 }

@@ -5,19 +5,25 @@
 //  Created by Alexandr Rodionov on 15.08.22.
 //
 
+// Экран настроек программы
 import SwiftUI
 import FirebaseService
 
 struct SettingsView: View {
     
+    // Флаг, показывать ли экран авторизации
     @State var showLoginView: Bool = false
+    
+    // Переменные для сохранения данных пользователя
     @State var userName = Session.shared.userName
     @State var userPhone = Session.shared.userPhone
     
+    // Добавляем вьмодели
     @StateObject private var appleService = FirebaseSignInWithAppleService()
     @StateObject private var viewModel = ViewModel()
     @StateObject private var authState = AuthState()
     
+    // Инициализатор
     init() {
         UINavigationBar.appearance().barTintColor = UIColor(named: "brown1")
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor : UIColor(named: "brown6")!]
@@ -81,6 +87,8 @@ struct SettingsView: View {
                                 }
                             }
                             .buttonStyle(.borderedProminent)
+                            
+                            // Тут показываем sheet по флагу, который и будет нашим экраном авторизации
                             .sheet(isPresented: $showLoginView) {
                                 VStack {
                                     Image("logoblack")
@@ -143,14 +151,14 @@ struct SettingsView: View {
     }
     
     func handleAppleServiceSucces(_ result: FirebaseSignInWithAppleResult) {
-        // Сохраняем результаты того что получили в ответ на аторизацию
         
+        // Сохраняем результаты того что получили в ответ на аторизацию
         Session.shared.token = result.uid
         Session.shared.userName = userName
         Session.shared.userPhone = userPhone
-        print("Наш токен =", Session.shared.token)
-        print("Наше имя =", Session.shared.userName)
-        print("Наш телефон =", Session.shared.userPhone)
+        //print("Наш токен =", Session.shared.token)
+        //print("Наше имя =", Session.shared.userName)
+        //print("Наш телефон =", Session.shared.userPhone)
     }
     
     func handleAppleServiceError(_ error: Error) {

@@ -5,6 +5,7 @@
 //  Created by Alexandr Rodionov on 15.08.22.
 //
 
+// Экран с лого, которое появляется при запуске программы
 import SwiftUI
 
 struct LogoView: View {
