@@ -5,6 +5,7 @@
 //  Created by Alexandr Rodionov on 20.08.22.
 //
 
+// Сама модель заказа услуги
 import Foundation
 
 struct OrderModel: Identifiable {
@@ -17,4 +18,6 @@ struct OrderModel: Identifiable {
     var token: String
     var userName: String
     var userPhone: String
+    var homeDayId: String
+    var homeTimeId: String
 }

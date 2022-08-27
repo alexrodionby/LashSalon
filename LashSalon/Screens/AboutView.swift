@@ -5,12 +5,15 @@
 //  Created by Alexandr Rodionov on 16.08.22.
 //
 
+// Экран описания салона (дополнительные данные по салону)
 import SwiftUI
 
 struct AboutView: View {
     
+    // Передаем объект, чтобы можно было использовать переход по табам
     @EnvironmentObject var router: TabRouter
     
+    // Инициализация экрана (доп. настройки на инициализации)
     init() {
         UINavigationBar.appearance().barTintColor = UIColor(named: "brown1")
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor : UIColor(named: "brown6")!]

@@ -5,6 +5,7 @@
 //  Created by Alexandr Rodionov on 14.08.22.
 //
 
+// Экран "Главная", где мы выбираем категорию услуг
 import SwiftUI
 
 struct HomeView: View {
@@ -22,6 +23,7 @@ struct HomeView: View {
     init() {
         UINavigationBar.appearance().barTintColor = UIColor(named: "brown1")
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor : UIColor(named: "brown6")!]
+        // Делаем сразу запрос на инициализации экрана
         serviceCategoryModel.getServiceCategory()
     }
     
@@ -35,9 +37,7 @@ struct HomeView: View {
                     .padding(.horizontal)
                 
                 LazyVGrid(columns: gridLayout, alignment: .center, spacing: 0) {
-                    
                     ForEach(serviceCategoryModel.serviceCategoryData) { index in
-                        
                         NavigationLink(destination: ServiceDetailView(categorey: index)) {
                             ZStack{
                                 RoundedRectangle(cornerRadius: 25)
@@ -55,7 +55,6 @@ struct HomeView: View {
                     }
                 }
             }
-            
             .navigationTitle("Главная")
             .navigationBarTitleDisplayMode(.inline)
             .background(Color("brown1"))

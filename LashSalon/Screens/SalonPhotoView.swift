@@ -5,6 +5,7 @@
 //  Created by Alexandr Rodionov on 16.08.22.
 //
 
+// Экран, где показываем фото салона
 import SwiftUI
 import FirebaseStorage
 import SDWebImageSwiftUI

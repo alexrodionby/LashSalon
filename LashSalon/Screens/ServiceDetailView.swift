@@ -5,22 +5,26 @@
 //  Created by Alexandr Rodionov on 15.08.22.
 //
 
+// Экран детализации услуги (после выбора категории услуги)
 import SwiftUI
 
 struct ServiceDetailView: View {
     
+    // Определяем константу для модели
     let categorey: ServiceCategoryModel?
     
+    // Передаем нашу вьюмодель
     @ObservedObject var serviceCategoryModel = ServiceCategoryViewModel()
     
+    // Настраиваем внешний вид LazyVGrid
     @State var gridLayout: [GridItem] = [GridItem(.flexible())]
     
     var body: some View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: gridLayout, alignment: .center) {
                 ForEach(serviceCategoryModel.serviceData) { index in
-                    
                     ZStack {
+                        
                         RoundedRectangle(cornerRadius: 25)
                             .fill(Color("brown4"))
                             .shadow(color: .gray, radius: 10, x: 5, y: 5)
@@ -37,7 +41,7 @@ struct ServiceDetailView: View {
                                 Text("Время: \(index.serviceTime) мин")
                                     .foregroundColor(Color.white)
                                     .padding(.horizontal)
-                 
+                                
                                 Text("Стоимость: \(index.servicePrice) руб")
                                     .foregroundColor(Color.white)
                                     .padding(.horizontal)
@@ -56,7 +60,6 @@ struct ServiceDetailView: View {
                                         .padding()
                                 }
                             }
-                            
                         }
                         .padding()
                         .navigationTitle(categorey?.serviceCategoryName ?? "")

@@ -5,6 +5,7 @@
 //  Created by Alexandr Rodionov on 15.08.22.
 //
 
+// Модель самой услуги
 import Foundation
 
 struct ServiceModel: Identifiable {

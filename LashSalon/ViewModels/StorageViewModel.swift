@@ -5,6 +5,7 @@
 //  Created by Alexandr Rodionov on 16.08.22.
 //
 
+// Вьюмодель, для получения файлов из firebase
 import Foundation
 import FirebaseStorage
 
